@@ -1,4 +1,4 @@
-function obj = nii2mesh(imgFp, thresh, saveDir)
+function nii2mesh(imgFp, thresh, saveDir)
 % Convert an Nifti image to a surfstruct object
 
 % Input arguments:
