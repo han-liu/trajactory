@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 2.8)
+project (traj)
+find_package (ITK REQUIRED)
+include (${ITK_USE_FILE})
+find_package (VTK REQUIRED)
+include (${VTK_USE_FILE})
+add_executable (traj traj.cxx)
+target_link_libraries (traj ${ITK_LIBRARIES} ${VTK_LIBRARIES})

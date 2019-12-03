@@ -4,7 +4,7 @@ clear all;
 close all;
 
 % input arguments
-niiImgFp = "/home/liuh26/Desktop/trajactory-data/thalamus-msks/Normal003-left.nii";
+niiImgFp = "/home/liuh26/Desktop/trajactory-data/thalamus/Normal003-right.nii";
 saveDir = "/home/liuh26/Desktop";
 thresh = 0.5;
 

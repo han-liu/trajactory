@@ -1,4 +1,4 @@
-function nii2mesh(imgFp, thresh, saveDir)
+function obj = nii2mesh(imgFp, thresh, saveDir)
 % Convert an Nifti image to a surfstruct object
 
 % Input arguments:
@@ -12,12 +12,12 @@ function nii2mesh(imgFp, thresh, saveDir)
 
 % Assumption:
 % 1. Isotropic
-% 2. Orientation is [1;2;-3]
+% 2. Orientation is [1;2;3]
 % 3. Color is white
 
 vox = [1;1;1];
-orient = [1;2;-3];
-color = [255;255;255];
+orient = [1;2;3];
+color = [0;255;255];
 
 V = niftiread(imgFp);
 [filepath, name, ext] = fileparts(imgFp);
@@ -28,7 +28,9 @@ info = niftiinfo(imgFp)
 [triangles, vertices] = isosurface(X,Y,Z, V, thresh);
 dim = [m;n;p];
 obj = surfstruct(vertices, triangles, dim, vox, orient, color);
-saveFp = fullfile(saveDir, strcat(name, '.mesh'))
-Surfacetools.saveSurfAsRMesh(obj, saveFp);
-fprintf(["** Successfully saved the mesh file at ", saveFp, " **\n"]);
+saveFp = fullfile(saveDir, strcat(name, '.mesh'));
+Surfacetools.saveSurfAsMesh(obj, saveFp);
+fprintf("** Successfully saved the mesh file at ");
+fprintf(saveFp);
+fprintf(" **\n");
 end
