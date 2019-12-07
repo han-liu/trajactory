@@ -1,0 +1,133 @@
+Label Name (BrainCOLOR),Label Number (BrainCOLOR),Label Volume (mm^3)
+3rd Ventricle,4,1921.00
+4th Ventricle,11,1921.00
+Right Accumbens Area,23,407.00
+Left Accumbens Area,30,498.00
+Right Amygdala,31,1040.00
+Left Amygdala,32,1015.00
+Brain Stem,35,20911.00
+Right Caudate,36,3324.00
+Left Caudate,37,3464.00
+Right Cerebellum Exterior,38,67237.00
+Left Cerebellum Exterior,39,67792.00
+Right Cerebellum White Matter,40,17950.00
+Left Cerebellum White Matter,41,16274.00
+Right Cerebral White Matter,44,247548.00
+Left Cerebral White Matter,45,246822.00
+Right Hippocampus,47,4392.00
+Left Hippocampus,48,4091.00
+Right Inf Lat Vent,49,292.00
+Left Inf Lat Vent,50,330.00
+Right Lateral Ventricle,51,11215.00
+Left Lateral Ventricle,52,9599.00
+Right Pallidum,55,1502.00
+Left Pallidum,56,1596.00
+Right Putamen,57,4797.00
+Left Putamen,58,4900.00
+Right Thalamus Proper,59,8722.00
+Left Thalamus Proper,60,8444.00
+Right Ventral DC,61,5130.00
+Left Ventral DC,62,5475.00
+Cerebellar Vermal Lobules I-V,71,6381.00
+Cerebellar Vermal Lobules VI-VII,72,3263.00
+Cerebellar Vermal Lobules VIII-X,73,4027.00
+Left Basal Forebrain,75,735.00
+Right Basal Forebrain,76,602.00
+Right ACgG anterior cingulate gyrus,100,7699.00
+Left ACgG anterior cingulate gyrus,101,7033.00
+Right AIns anterior insula,102,4888.00
+Left AIns anterior insula,103,4747.00
+Right AOrG anterior orbital gyrus,104,2737.00
+Left AOrG anterior orbital gyrus,105,2018.00
+Right AnG angular gyrus,106,12293.00
+Left AnG angular gyrus,107,12751.00
+Right Calc calcarine cortex,108,4702.00
+Left Calc calcarine cortex,109,3362.00
+Right CO central operculum,112,5033.00
+Left CO central operculum,113,5563.00
+Right Cun cuneus,114,8600.00
+Left Cun cuneus,115,6043.00
+Right Ent entorhinal area,116,1496.00
+Left Ent entorhinal area,117,1473.00
+Right FO frontal operculum,118,2563.00
+Left FO frontal operculum,119,3809.00
+Right FRP frontal pole,120,3392.00
+Left FRP frontal pole,121,3389.00
+Right FuG fusiform gyrus,122,10023.00
+Left FuG fusiform gyrus,123,10225.00
+Right GRe gyrus rectus,124,3710.00
+Left GRe gyrus rectus,125,2618.00
+Right IOG inferior occipital gyrus,128,8000.00
+Left IOG inferior occipital gyrus,129,8001.00
+Right ITG inferior temporal gyrus,132,17235.00
+Left ITG inferior temporal gyrus,133,15457.00
+Right LiG lingual gyrus,134,12896.00
+Left LiG lingual gyrus,135,11284.00
+Right LOrG lateral orbital gyrus,136,2135.00
+Left LOrG lateral orbital gyrus,137,2543.00
+Right MCgG middle cingulate gyrus,138,6720.00
+Left MCgG middle cingulate gyrus,139,6341.00
+Right MFC medial frontal cortex,140,3362.00
+Left MFC medial frontal cortex,141,2982.00
+Right MFG middle frontal gyrus,142,32860.00
+Left MFG middle frontal gyrus,143,25630.00
+Right MOG middle occipital gyrus,144,6548.00
+Left MOG middle occipital gyrus,145,6486.00
+Right MOrG medial orbital gyrus,146,5350.00
+Left MOrG medial orbital gyrus,147,4517.00
+Right MPoG postcentral gyrus medial segment,148,1927.00
+Left MPoG postcentral gyrus medial segment,149,1856.00
+Right MPrG precentral gyrus medial segment,150,4150.00
+Left MPrG precentral gyrus medial segment,151,3936.00
+Right MSFG superior frontal gyrus medial segment,152,9562.00
+Left MSFG superior frontal gyrus medial segment,153,9002.00
+Right MTG middle temporal gyrus,154,15750.00
+Left MTG middle temporal gyrus,155,16349.00
+Right OCP occipital pole,156,1683.00
+Left OCP occipital pole,157,1429.00
+Right OFuG occipital fusiform gyrus,160,5808.00
+Left OFuG occipital fusiform gyrus,161,5881.00
+Right OpIFG opercular part of the inferior frontal gyrus,162,5960.00
+Left OpIFG opercular part of the inferior frontal gyrus,163,5548.00
+Right OrIFG orbital part of the inferior frontal gyrus,164,2168.00
+Left OrIFG orbital part of the inferior frontal gyrus,165,2184.00
+Right PCgG posterior cingulate gyrus,166,5307.00
+Left PCgG posterior cingulate gyrus,167,6027.00
+Right PCu precuneus,168,15283.00
+Left PCu precuneus,169,14844.00
+Right PHG parahippocampal gyrus,170,3297.00
+Left PHG parahippocampal gyrus,171,3506.00
+Right PIns posterior insula,172,2873.00
+Left PIns posterior insula,173,3238.00
+Right PO parietal operculum,174,3504.00
+Left PO parietal operculum,175,3439.00
+Right PoG postcentral gyrus,176,14144.00
+Left PoG postcentral gyrus,177,12902.00
+Right POrG posterior orbital gyrus,178,3254.00
+Left POrG posterior orbital gyrus,179,3810.00
+Right PP planum polare,180,2367.00
+Left PP planum polare,181,2771.00
+Right PrG precentral gyrus,182,18715.00
+Left PrG precentral gyrus,183,17017.00
+Right PT planum temporale,184,2704.00
+Left PT planum temporale,185,2706.00
+Right SCA subcallosal area,186,1160.00
+Left SCA subcallosal area,187,1242.00
+Right SFG superior frontal gyrus,190,17271.00
+Left SFG superior frontal gyrus,191,20590.00
+Right SMC supplementary motor cortex,192,6868.00
+Left SMC supplementary motor cortex,193,7938.00
+Right SMG supramarginal gyrus,194,11359.00
+Left SMG supramarginal gyrus,195,13022.00
+Right SOG superior occipital gyrus,196,4599.00
+Left SOG superior occipital gyrus,197,5458.00
+Right SPL superior parietal lobule,198,15834.00
+Left SPL superior parietal lobule,199,18519.00
+Right STG superior temporal gyrus,200,8933.00
+Left STG superior temporal gyrus,201,8656.00
+Right TMP temporal pole,202,10133.00
+Left TMP temporal pole,203,8675.00
+Right TrIFG triangular part of the inferior frontal gyrus,204,4253.00
+Left TrIFG triangular part of the inferior frontal gyrus,205,5707.00
+Right TTG transverse temporal gyrus,206,2283.00
+Left TTG transverse temporal gyrus,207,2247.00

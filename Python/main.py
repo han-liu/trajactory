@@ -31,10 +31,6 @@ def generateBrainSurf(rawImgFp, saveDir, thresh=15):
     img = scipy.ndimage.morphology.binary_erosion(img)  # erosion
     img = utils.getLargestConnectedComp(img)  # largest connected component
     img = scipy.ndimage.morphology.binary_dilation(img)  # dilation
-    img = 1 - img  # invert
-    img = utils.getLargestConnectedComp(img)  # largest connected component
-    img = 1 - img  # invert
-    img = utils.getLargestConnectedComp(img)  # largest connected component
     # eliminate the outlier
     for y in range(14):
         for z in range(114, 119):
@@ -52,25 +48,24 @@ def generateTargetSurf(brainSurfImgFp, saveDir):
         for y in range(176):  # Left-Right
             for z in range(176):  # Superior-Inferior
                 # define the boundaries of x, y and z
-                if x < 86 or x > 223 or z < 65:
+                if x < 60 or x > 117 or z < 100:
                     img[x, y, z] = 0
-    img = utils.getLargestConnectedComp(img)
     img = img.astype(dtype="uint16")
     utils.saveImg(img, saveDir + "/target-surf.nii")
     return img
 
 
 # fill the surface
-def fillSurf(targetSurfImgFP, saveDir):
-    img = utils.readImg(targetSurfImgFP)
+def fillSurf(targetSurfImgFp, saveDir):
+    img = utils.readImg(targetSurfImgFp)
     for y in range(176):
-        for z in range(65, 176):
-            right = 0
-            for x in range(223, 85, -1):
+        for x in range(60, 117):
+            top = 0
+            for z in range(100, 176)[::-1]:
                 if img[x, y, z] == 1:
-                    right = x
+                    top = z
                     break
-            for x in range(86, right):
+            for z in range(100, top):
                 img[x, y, z] = 1
     img = scipy.ndimage.morphology.binary_dilation(img)
     img = img.astype(dtype="uint16")
@@ -79,18 +74,19 @@ def fillSurf(targetSurfImgFP, saveDir):
 
 
 # generate the surface
-def generateSurf(fillSurfImgFp, saveDir):
-    img = utils.readImg(fillSurfImgFp)
+def generateSurf(targetSurfImgFp, saveDir):
+    img = utils.readImg(targetSurfImgFp)
+    img = scipy.ndimage.morphology.binary_dilation(img)
     surf = np.zeros(img.shape)
-    for x in range(86, 223):
+    for x in range(60, 117):
         for y in range(176):
             # from superior to inferior
-            for z in range(65,176)[::-1]:
+            for z in range(100,176)[::-1]:
                 if img[x, y, z] == 1:
                     surf[x, y, z] = 1
                     break
-    for x in range(86, 223):
-        for z in range(64, 176):
+    for x in range(60, 117):
+        for z in range(100, 176):
             # from right to left
             for y in range(176)[::-1]:
                 if img[x, y, z] == 1:
@@ -101,13 +97,13 @@ def generateSurf(fillSurfImgFp, saveDir):
                 if img[x, y, z] == 1:
                     surf[x, y, z] = 1
                     break
-    for y in range(176):
-        for z in range(64, 176):
-            # from posterior to anterior
-            for x in range(84, 223)[::-1]:
-                if img[x, y, z] == 1:
-                    surf[x, y, z] = 1
-                    break
+    # for y in range(176):
+    #     for z in range(100, 176):
+    #         # from anterior to posterior
+    #         for x in range(60, 117):
+    #             if img[x, y, z] == 1:
+    #                 surf[x, y, z] = 1
+    #                 break
     surf = surf.astype(dtype="uint16")
     utils.saveImg(surf, saveDir+"/surface.nii")
     return surf
@@ -139,7 +135,7 @@ def skullStrip(imgFp, saveDir):
 #           targetPt   = np.array([93, 123, 99])
 #  In C++ format, but in y, x ,z order in Python
 
-def visualizeTraj(postSurfImgFp, vesselImgFp, ventricleImgFp, brainSurfImgFp, startingPt, targetPt, saveDir):
+def visualizeTraj(postSurfImgFp, vesselImgFp, ventricleImgFp, brainSurfImgFp, ANTImgFp, startingPt, targetPt, saveDir):
     postSurf = utils.readImg(postSurfImgFp)
     dist = ((targetPt[0] - startingPt[0]) ** 2 + (targetPt[1] - startingPt[1]) ** 2
             + (targetPt[2] - startingPt[2]) ** 2) ** 0.5
@@ -156,6 +152,13 @@ def visualizeTraj(postSurfImgFp, vesselImgFp, ventricleImgFp, brainSurfImgFp, st
         z = int(round(startingPt[2] + flow[2] * idx))
         traj[x, y, z] = 1
 
+    # extend the trajectory
+    for idx in range(25):
+        x = int(round(startingPt[1] - flow[1] * idx))
+        y = int(round(startingPt[0] - flow[0] * idx))
+        z = int(round(startingPt[2] - flow[2] * idx))
+        traj[x, y, z] = 1
+
     traj = scipy.ndimage.morphology.binary_dilation(traj)
     traj = traj.astype(dtype="uint16")
 
@@ -167,17 +170,24 @@ def visualizeTraj(postSurfImgFp, vesselImgFp, ventricleImgFp, brainSurfImgFp, st
     vessel = utils.readImg(vesselImgFp)
     ventricle = utils.readImg(ventricleImgFp)
     brain = utils.readImg(brainSurfImgFp)
+    ANT = utils.readImg(ANTImgFp)
 
     # Assign with different colors
     traj[np.where(traj != 0)] = 2000          # trajectory
     ventricle[np.where(ventricle != 0)] = 20  # ventricles
     postSurf[np.where(postSurf != 0)] = 10    # post-surface
-    brain[np.where(brain != 0)] = 400         # brain-surface
+    brain[np.where(brain != 0)] = 5           # brain-surface
     vessel[np.where(vessel != 0)] = 200       # vessel
     target[np.where(target != 0)] = 50        # target point
+    ANT[np.where(ANT != 0)] = 300             # ANT
 
     # plot the final planning graph
-    finalPlanning = ventricle + postSurf + traj + target + vessel + brain
+    finalPlanning = ventricle + postSurf + traj + vessel + brain + ANT  # + target
+    finalPlanning[np.where(finalPlanning == 15)] = 10
+    finalPlanning[np.where(finalPlanning == 210)] = 10
+    finalPlanning[np.where(finalPlanning == 215)] = 10
+    finalPlanning[np.where(finalPlanning == 2000)] = 2005
+    finalPlanning[np.where(finalPlanning == 2015)] = 2005
     finalPlanning = finalPlanning.astype(dtype="uint16")
     utils.saveImg(finalPlanning, saveDir+"/final_planning.nii")
     return finalPlanning
@@ -187,7 +197,7 @@ if __name__ == "__main__":
     # The entire pipeline of visualization
 
     # define the directories
-    saveDir = "/home/liuh26/Desktop/working_dir"
+    saveDir = "/home/liuh26/Desktop/new"
     if not os.path.exists(saveDir):
         os.mkdir(saveDir)
 
@@ -196,23 +206,25 @@ if __name__ == "__main__":
     ventricleImgFp = "/home/liuh26/Desktop/ventricles.nii"
     rawImgFp = "/home/liuh26/Desktop/Normal003.nii"
     slantMskFp = "/home/liuh26/Desktop/trajactory-data/SLANT/Normal003_seg.nii"
+    ANTImgFp = "/home/liuh26/Desktop/ANT.nii"
 
     # To be generated in saving directory
     brainSurfImgFp = saveDir + "/brain-surf.nii"
-    targetSurfImgFP = saveDir + "/target-surf.nii"
+    targetSurfImgFp = saveDir + "/target-surf.nii"
     fillSurfImgFp = saveDir + "/fill-surf.nii"
     surfImgFp = saveDir + "/surface.nii"
     postSurfImgFp = saveDir + "/post-surface.nii"
 
     # import the result from the C++ program
-    startingPt = np.array([164, 87, 63])
-    targetPt   = np.array([93, 123, 99])
+    # startingPt = np.array([164, 87, 63])
+    startingPt = np.array([151, 114, 128])  # new vessel map
+    targetPt   = np.array([92, 122, 98])
 
     # running the pipeline
-    generateSegFromSlant(slantMskFp, saveDir)
+    # generateSegFromSlant(slantMskFp, saveDir)
     generateBrainSurf(rawImgFp, saveDir)
     generateTargetSurf(brainSurfImgFp, saveDir)
-    fillSurf(targetSurfImgFP, saveDir)
-    generateSurf(fillSurfImgFp, saveDir)
+    # fillSurf(targetSurfImgFp, saveDir)
+    generateSurf(targetSurfImgFp, saveDir)
     postProcessSurf(surfImgFp, saveDir)
-    visualizeTraj(postSurfImgFp, vesselImgFp, ventricleImgFp, brainSurfImgFp, startingPt, targetPt, saveDir)
+    visualizeTraj(postSurfImgFp, vesselImgFp, ventricleImgFp, brainSurfImgFp, ANTImgFp, startingPt, targetPt, saveDir)

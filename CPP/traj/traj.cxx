@@ -18,8 +18,8 @@ using RescaleType = itk::RescaleIntensityImageFilter<ImageType, ImageType>;
 using IteratorType = itk::ImageRegionIterator<ImageType>;
 
 
-// compute the minimum distance given a trajectory (defined by a starting point and a target point) and a distance map.
-double computeMinDist(std::vector<int> startingPt, std::vector<int> targetPt, ImageType::Pointer distMap){
+// compute the minimum distance given a trajectory (defined by an entry point and a target point) and a distance map.
+double computeDist(std::vector<int> startingPt, std::vector<int> targetPt, ImageType::Pointer distMap){
     double dist = sqrt(pow(startingPt[0]-targetPt[0],2)+pow(startingPt[1]-targetPt[1],2)+pow(startingPt[2]-targetPt[2],2));
     int nPt = int(dist);
     std::vector<double> flow = {0, 0, 0};
@@ -89,10 +89,10 @@ int main(int argc, char* argv[])
     IteratorType surfIterator(surf, surf->GetLargestPossibleRegion());
     IteratorType venIterator(venMask, venMask->GetLargestPossibleRegion());
     IteratorType vesIterator(vesMask, vesMask->GetLargestPossibleRegion());
-    std::vector<int> targetPt = {93, 123, 99};
+    std::vector<int> targetPt = {92, 122, 98};
 
     std::cout << "** Computing the optimal trajectory **" << std::endl;
-    double opt_dist = 0;
+    double minLoss = 1e4;
     std::vector<int> opt_startingPt = {0, 0, 0};
 
     for (surfIterator.GoToBegin(), venIterator.GoToBegin(), vesIterator.GoToBegin(); !surfIterator.IsAtEnd(); ++venIterator, ++vesIterator, ++surfIterator){
@@ -100,19 +100,17 @@ int main(int argc, char* argv[])
             ImageType::IndexType idx = surfIterator.GetIndex();
             std::vector<int> startingPt = {int(idx[0]), int(idx[1]), int(idx[2])};
 //            std::cout << "starting Pt index: " << idx[0] << " " << idx[1] << " " << idx[2] << std::endl;
-            double venDist = computeMinDist(startingPt, targetPt, venDistMap);
-            double vesDist = computeMinDist(startingPt, targetPt, vesDistMap);
-            if (venDist > opt_dist) {
+            double venDist = computeDist(startingPt, targetPt, venDistMap);
+            if (venDist<2) {venDist=1e4;}
+            double vesDist = computeDist(startingPt, targetPt, vesDistMap);
+            double loss = venDist/vesDist;
+            if (loss < minLoss) {
                 std::cout << "Found better trajectory at ";
-                opt_dist = venDist;
+                minLoss = loss;
                 for (int i = 0; i < 3; i++) {opt_startingPt[i] = startingPt[i]; std::cout << startingPt[i] << " ";}
-                std::cout << " minDist: " << venDist;
+                std::cout << " Loss: " << loss;
                 std::cout << std::endl;
             }
-        if (venDist+vesDist > opt_dist) {
-            opt_dist = venDist + vesDist;
-            for (int i = 0; i < 3; i++) { opt_startingPt[i] = startingPt[i]; }
-        }
         }
     }
 
